@@ -504,7 +504,7 @@ grep -n "stdio.h" programa.i | head -5
 
 ¿Qué información comunican esas líneas `# N "archivo"`? ¿De qué archivo proviene el bloque que contiene la declaración de `printf`?
 
-> **R:**
+>R: Esas líneas indican el número de línea y el archivo de origen de cada parte del código. Sirven para rastrear de dónde proviene cada fragmento. En este caso, la declaración de printf proviene del archivo stdio.h.
 
 ---
 
