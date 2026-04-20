@@ -350,7 +350,7 @@ LINEAS_I=1783
 
 ¿Por qué ese número es tan mayor que las 94 líneas de `programa.c`?
 
-> **R:**
+> **R:** Porque el preprocesador incluye el contenido completo de los headers como stdio.h y además expande todas las macros, lo que hace que el archivo resultante tenga muchas más líneas que el código original.
 
 ---
 
@@ -393,7 +393,7 @@ COMENTARIOS_EN_I=NO
 
 ¿Por qué ocurre eso?
 
-> **R:**
+> **R:** Porque el preprocesador elimina todos los comentarios antes de la compilación, ya que no son necesarios para generar el código ejecutable.
 
 ---
 
@@ -422,7 +422,7 @@ Nótese que `CUADRADO(5)` se expande a `((5) * (5))`, con los paréntesis extra 
 
 **P3.** Ejecutá `grep -n "CUADRADO" programa.i` y copiá la salida completa.
 
-> **R:**
+> **R:**1752:    printf("CUADRADO(%d)      = %d\n", 5, ((5) * (5)));
 
 ¿El nombre `CUADRADO` aparece tal cual en `programa.i`, o fue reemplazado
 por otra cosa? Respondé SI o NO:
@@ -434,7 +434,7 @@ CUADRADO_EN_I=NO
 
 **P4.** Ejecutá `grep -n '"1\.0"' programa.i` y copiá la línea encontrada.
 
-> **R:**
+> **R:**1743:    printf("=== Laboratorio de Compilacion en C (v%s) ===\n\n", "1.0");
 
 ¿Cuál era el nombre de la macro en `programa.c` que fue reemplazada por `"1.0"`?
 
@@ -475,7 +475,7 @@ gcc -E programa.c | grep "Iniciando"
 gcc -E -DDEBUG programa.c | grep "Iniciando"
 ```
 
-> **R:**
+> **R:**(Sin DEBUG no aparece nada) printf("[DEBUG] %s\n", ("Iniciando main"));
 
 ¿Agregar `-DDEBUG` hace que aparezca código nuevo en el `.i` que antes no estaba?
 Respondé SI o NO:
@@ -504,7 +504,7 @@ grep -n "stdio.h" programa.i | head -5
 
 ¿Qué información comunican esas líneas `# N "archivo"`? ¿De qué archivo proviene el bloque que contiene la declaración de `printf`?
 
->R: Esas líneas indican el número de línea y el archivo de origen de cada parte del código. Sirven para rastrear de dónde proviene cada fragmento. En este caso, la declaración de printf proviene del archivo stdio.h.
+>**R:**Esas líneas indican el número de línea y el archivo de origen de cada parte del código. Sirven para rastrear de dónde proviene cada fragmento. En este caso, la declaración de printf proviene del archivo stdio.h.
 
 ---
 
@@ -660,7 +660,9 @@ Aparecen como instrucciones de llamada (por ejemplo `bl _area_circulo`), pero **
 
 **P7.** Ejecutá `grep "area_circulo" programa.s` y copiá la salida.
 
-> **R:**
+> **R:**.ascii "area_circulo(%.1f) = %.4f\12\0"
+call    area_circulo
+.def    area_circulo;   .scl    2;      .type   32;     .endef
 
 ¿`area_circulo` aparece como una función *definida* en `programa.s`
 (con su propio bloque de instrucciones) o solo como una *llamada* (instrucción sin cuerpo)?
@@ -674,12 +676,15 @@ AREA_EN_S=LLAMADA
 **P8.** Encontrá en `programa.s` la etiqueta `sumar:` o `_sumar:` y copiá
 las primeras 4 líneas de instrucciones que le siguen.
 
-> **R:**
+> **R:**pushq	%rbp
+	.seh_pushreg	%rbp
+	movq	%rsp, %rbp
+	.seh_setframe	%rbp, 0
 
 Explicá en términos generales qué hacen esas instrucciones
 (usá los comentarios del laboratorio como guía):
 
-> **R:**
+> **R:**Las instrucciones preparan la función, guardando el estado anterior y configurando la pila para poder trabajar con los parámetros y variables locales.
 
 ---
 
@@ -692,7 +697,9 @@ grep "llamadas" programa.s
 
 **P9.** Ejecutá `grep "llamadas" programa.s` y copiá la salida.
 
-> **R:**
+> **R:** movl    llamadas(%rip), %eax
+        movl    %eax, llamadas(%rip)
+        movl    llamadas(%rip), %eax
 
 ¿Aparece la variable `llamadas` en el ensamblador?
 Respondé SI o NO:
@@ -802,7 +809,22 @@ Salida esperada (simplificada):
 
 **P10.** Ejecutá `nm programa.o` y copiá la salida completa.
 
-> **R:**
+> **R:**0000000000000000 b .bss
+0000000000000000 d .data
+0000000000000000 p .pdata
+0000000000000000 r .rdata
+0000000000000000 r .rdata$zzz
+0000000000000000 t .text
+0000000000000000 r .xdata
+                 U __main
+                 U __mingw_printf
+                 U area_circulo
+                 U factorial
+0000000000000149 T imprimir_separador
+0000000000000000 B llamadas
+0000000000000023 T main
+                 U puts
+0000000000000000 T sumar
 
 ¿Con qué letra aparece `area_circulo` en esa tabla?
 Escribí solo la letra (una mayúscula):
@@ -828,7 +850,7 @@ nm matematica.o
 **P11.** ¿Por qué `area_circulo` tiene ese tipo en `programa.o`
 pero tipo `T` en `matematica.o`?
 
-> **R:**
+> **R:**Porque en programa.o la función area_circulo no está definida, solo se la llama, por eso aparece como símbolo indefinido (U). En cambio, en matematica.o sí está implementada, por eso aparece como T (texto), indicando que ahí está su código.
 
 ¿Qué etapa del proceso de compilación resuelve esa diferencia?
 Respondé con una palabra: PREPROCESAMIENTO, COMPILACION, ENSAMBLADO o ENLAZADO:
@@ -853,7 +875,7 @@ Un `.o` no es ejecutable por dos razones:
 
 **P12.** Intentá ejecutar `./programa.o` directamente. ¿Qué mensaje aparece?
 
-> **R:**
+> **R:**bash: ./programa.o: cannot execute binary file: Exec format error
 
 ¿Se puede ejecutar un archivo `.o` directamente?
 Respondé SI o NO:
@@ -948,7 +970,7 @@ nm programa | grep area_circulo
 **P13.** Enlazá con `gcc programa.o matematica.o -o programa`.
 Ejecutá `nm programa | grep "area_circulo"` y copiá la salida.
 
-> **R:**
+> **R:**0000000140001600 T area_circulo
 
 ¿Con qué letra aparece ahora `area_circulo` en el ejecutable final?
 Escribí solo la letra:
@@ -970,7 +992,7 @@ Quedan algunos `U` incluso en el ejecutable final. ¿Por qué? Son funciones de 
 
 **P14.** Ejecutá `nm programa | grep "^ *U"` y copiá la salida.
 
-> **R:**
+> **R:**U __end__
 
 ¿Quedan símbolos de tipo `U` en el ejecutable final?
 Respondé SI o NO:
@@ -980,7 +1002,7 @@ SIMBOLOS_U_FINAL=SI
 
 ¿Por qué quedan? ¿Quién los resuelve y cuándo?
 
-> **R:**
+> **R:**Porque son símbolos externos que no están definidos dentro del ejecutable. En este caso __end__ es un símbolo provisto por el sistema o el linker. Estos símbolos se resuelven en tiempo de ejecución por el sistema operativo.
 
 ---
 
@@ -994,7 +1016,22 @@ SIMBOLOS_U_FINAL=SI
 
 **P15.** Ejecutá `./programa` y copiá la salida completa.
 
-> **R:**
+> **R:**=== Laboratorio de Compilacion en C (v1.0) ===
+
+sumar(3, 4)       = 7
+CUADRADO(5)      = 25
+MAX(7, 12)        = 12
+----------------------------------------
+area_circulo(5.0) = 78.5398
+Factoriales:
+  0! = 1
+  1! = 1
+  2! = 2
+  3! = 6
+  4! = 24
+  5! = 120
+----------------------------------------
+Llamadas a sumar(): 1
 
 ¿Qué valor da `factorial(5)`? Escribí solo el número:
 
@@ -1011,25 +1048,26 @@ FACTORIAL_5=120
 como `CUADRADO(x)` y una **función real** como `sumar(a, b)`.
 ¿En qué etapa "desaparece" cada una? ¿Cuál tiene verificación de tipos?
 
-> **R:**
+> **R:**Una macro como CUADRADO(x) es una sustitución de texto que hace el preprocesador antes de la compilación, por lo que desaparece en la etapa de preprocesamiento y no tiene verificación de tipos. En cambio, una función real como sumar(a, b) es procesada por el compilador, existe en el código generado y sí tiene verificación de tipos durante la compilación.
 
 ---
 
 **P17.** ¿Qué diferencia hay entre un símbolo de tipo `T` y uno de tipo `D`
 en la salida de `nm`? ¿En qué sección del archivo objeto vive cada uno?
 
-> **R:**
+> **R:**Un símbolo de tipo T corresponde a código de funciones y se encuentra en la sección de texto (.text) del archivo objeto. En cambio, un símbolo de tipo D corresponde a datos globales inicializados y se encuentra en la sección de datos (.data).
 
 ---
 
 **P18.** (Bonus) Ejecutá `otool -L programa` (macOS) o `ldd programa` (Linux)
 y copiá la salida.
 
-> **R:**
+> **R:**No aplica en Windows (MINGW), ya que las herramientas otool y ldd son propias de macOS y Linux respectivamente.
+
 
 ¿Por qué `libc` no hubo que especificarla explícitamente al enlazar con `gcc`?
 
-> **R:**
+> **R:**Porque gcc automáticamente enlaza la biblioteca estándar de C (libc) por defecto, por lo que no es necesario especificarla manualmente.
 
 ---
 
