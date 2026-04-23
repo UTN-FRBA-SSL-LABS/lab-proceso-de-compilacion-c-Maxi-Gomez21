@@ -346,7 +346,7 @@ Todos son correctos. Lo importante no es el número exacto sino que sea **varios
 **P1.** Ejecutá `wc -l programa.i` y escribí el número de líneas que obtenés.
 
 <!-- Completá la línea siguiente con el número exacto (solo dígitos, sin espacios): -->
-LINEAS_I=1783
+
 
 ¿Por qué ese número es tan mayor que las 94 líneas de `programa.c`?
 
@@ -389,7 +389,7 @@ grep "Archivo fuente principal" programa.i   # no debe encontrar nada
 ¿El comando encuentra algo o no devuelve nada?
 
 <!-- Completá con SI (si encontró algo) o NO (si no encontró nada): -->
-COMENTARIOS_EN_I=NO
+
 
 ¿Por qué ocurre eso?
 
@@ -428,7 +428,7 @@ Nótese que `CUADRADO(5)` se expande a `((5) * (5))`, con los paréntesis extra 
 por otra cosa? Respondé SI o NO:
 
 <!-- Completá con SI o NO: -->
-CUADRADO_EN_I=NO
+
 
 ---
 
@@ -439,7 +439,7 @@ CUADRADO_EN_I=NO
 ¿Cuál era el nombre de la macro en `programa.c` que fue reemplazada por `"1.0"`?
 
 <!-- Completá con el nombre exacto de la macro (en mayúsculas, como está en el fuente): -->
-NOMBRE_MACRO_VERSION=VERSION
+
 
 ---
 
@@ -481,7 +481,7 @@ gcc -E -DDEBUG programa.c | grep "Iniciando"
 Respondé SI o NO:
 
 <!-- Completá con SI o NO: -->
-DEBUG_ACTIVA_CODIGO=SI
+
 
 ---
 
@@ -669,7 +669,7 @@ call    area_circulo
 Respondé DEFINIDA o LLAMADA:
 
 <!-- Completá con DEFINIDA o LLAMADA: -->
-AREA_EN_S=LLAMADA
+
 
 ---
 
@@ -705,7 +705,7 @@ grep "llamadas" programa.s
 Respondé SI o NO:
 
 <!-- Completá con SI o NO: -->
-LLAMADAS_EN_S=SI
+
 
 ---
 
@@ -830,7 +830,7 @@ Salida esperada (simplificada):
 Escribí solo la letra (una mayúscula):
 
 <!-- Completá con la letra exacta que muestra nm (U, T, D, etc.): -->
-TIPO_AREA_EN_O=U
+
 
 ---
 
@@ -856,7 +856,7 @@ pero tipo `T` en `matematica.o`?
 Respondé con una palabra: PREPROCESAMIENTO, COMPILACION, ENSAMBLADO o ENLAZADO:
 
 <!-- Completá con una de las cuatro opciones: -->
-ETAPA_QUE_RESUELVE=ENLAZADO
+
 
 ---
 
@@ -881,7 +881,7 @@ Un `.o` no es ejecutable por dos razones:
 Respondé SI o NO:
 
 <!-- Completá con SI o NO: -->
-EJECUTABLE_O=NO
+
 
 ---
 
@@ -976,7 +976,7 @@ Ejecutá `nm programa | grep "area_circulo"` y copiá la salida.
 Escribí solo la letra:
 
 <!-- Completá con la letra exacta que muestra nm: -->
-TIPO_AREA_ENLAZADO=T
+
 
 ---
 
@@ -998,7 +998,7 @@ Quedan algunos `U` incluso en el ejecutable final. ¿Por qué? Son funciones de 
 Respondé SI o NO:
 
 <!-- Completá con SI o NO: -->
-SIMBOLOS_U_FINAL=SI
+
 
 ¿Por qué quedan? ¿Quién los resuelve y cuándo?
 
@@ -1036,7 +1036,7 @@ Llamadas a sumar(): 1
 ¿Qué valor da `factorial(5)`? Escribí solo el número:
 
 <!-- Completá con el número exacto: -->
-FACTORIAL_5=120
+
 
 ---
 
@@ -1292,10 +1292,12 @@ c. Ejecutar `ldd programa_static` (Linux). ¿Qué diferencia hay respecto a `ldd
 a. Ejecutar `clang -Xclang -dump-tokens programa.c 2>&1 | grep "programa.c" | wc -l`. ¿Cuántos tokens tiene `programa.c`?
 b. Buscar en la salida del AST (`clang -Xclang -ast-dump`) la función `factorial`. ¿Cómo se representa la recursión en el árbol?
 c. ¿Aparece algún `ImplicitCastExpr` en el AST? ¿Qué conversión realiza?
+# Respuestas 
+
 LINEAS_I=1783
-COMENTARIOS_EN_I=NO
 CUADRADO_EN_I=NO
 NOMBRE_MACRO_VERSION=VERSION
+COMENTARIOS_EN_I=NO
 DEBUG_ACTIVA_CODIGO=SI
 AREA_EN_S=LLAMADA
 LLAMADAS_EN_S=SI
